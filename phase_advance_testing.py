@@ -20,37 +20,48 @@ phase_adv_hall_signal = 0
 counter = 0
 counterRemaining = 0
 counterStoreinLatch = 0
-angle = 10
+angle = 16
 # gloabl variables space end here
 
 
 def hall_change():
-    global current_hall_change_time, filtered_hall_a, hall_change_time, counter,counterRemaining, angle
+    global current_hall_change_time, filtered_hall_a, hall_change_time, counter, counterRemaining, angle
     filtered_hall_a = 1 if filtered_hall_a == 0 else 0
     hall_change_time -= 100 if hall_change_time > 1000 else 0
     current_hall_change_time = hall_change_time      
 
-    # add the hall change modifications here
+    # Calculate remaining counters based on angle
     counterStoreinLatch = counter
-    print(f"counterStoreinLatch: {counterStoreinLatch}") 
+    # Calculate counterRemaining based on the 
+    counterRemaining = (counterStoreinLatch - ((counterStoreinLatch * angle) / 180))
+    if(angle <= 16):
+        counterRemaining = (counterStoreinLatch * angle) / 180
     
-    counterRemaining =  ( counterStoreinLatch - ((counterStoreinLatch* angle)/180))
-    counter = 0
-    print(counter)
-    print(counterRemaining)
-    # add the hall change till here
+    # else:
+    #     total_count_for_hall = counter
+    #     counterRemaining = (counterStoreinLatch - int((counterStoreinLatch * angle) / 180))
+
+    counter = 0  # Reset the counter for the next cycle
+    # counterRemaining = (counterStoreinLatch - ((counterStoreinLatch * angle) / 180))
+    # # counterRemaining = (counter * angle)/180
+    # counter = 0
+
 
 def fastloop():
     global phase_adv_hall_signal, counter, counterRemaining, angle
 
-    # add the fastloop from here
-    # phase_adv_hall_signal = filtered_hall_a
     counter += 1
-    counterRemaining  -= 1
-    if(counterRemaining <= 0):
-        if(angle == 0):
-            phase_adv_hall_signal = filtered_hall_a 
-        else:
+    # print("counter")
+    # print(counter)
+    if angle == 0:
+        # If angle is 0, phase_adv_hall_signal follows filtered_hall_a
+        phase_adv_hall_signal = filtered_hall_a
+    
+    else:
+        # When counterRemaining reaches 0, toggle phase_adv_hall_signal
+        if counterRemaining > 0:
+            counterRemaining -= 1
+        if counterRemaining <= 0:
             phase_adv_hall_signal = filtered_hall_a ^ 1
     # print(counterRemaining)
    
