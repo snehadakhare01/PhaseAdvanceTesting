@@ -22,7 +22,7 @@ phase_adv_hall_signal = 0
 counter = 0
 counterRemaining = 0
 counterStoreinLatch = 0
-angle = 11
+angle = 0
 # gloabl variables space end here
 
 
@@ -52,16 +52,16 @@ def fastloop():
     counter += 1
     # print("counter")
     # print(counter)
-    if angle == 0:
-        # If angle is 0, phase_adv_hall_signal follows filtered_hall_a
-        phase_adv_hall_signal = filtered_hall_a
+    # if angle == 0:
+    #     # If angle is 0, phase_adv_hall_signal follows filtered_hall_a
+    #     phase_adv_hall_signal = filtered_hall_a
     
-    else:
+    # else:
         # When counterRemaining reaches 0, toggle phase_adv_hall_signal
-        if counterRemaining > 0:
-            counterRemaining -= 1
-        if counterRemaining <= 0:
-            phase_adv_hall_signal = filtered_hall_a ^ 1
+    if counterRemaining > 0:
+        counterRemaining -= 1
+    if counterRemaining <= 0:
+         phase_adv_hall_signal = filtered_hall_a ^ 1
     # print(counterRemaining)
    
 
